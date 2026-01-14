@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, sans-serif;
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    Today, <span id="date"></span>, the soup is Tomato Bisque
+
+    <script>
+      document.getElementById("date").textContent =
+        new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+  </body>
+</html>
