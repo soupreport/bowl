@@ -19,6 +19,11 @@
     <script>
       document.getElementById("date").textContent =
         new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    // Soup
+  fetch("./soup.json?v=" + Date.now())
+    .then(res => res.json())
+    .then(data => {document.getElementById("soup").textContent = data.soup;})
+    .catch(() => {document.getElementById("soup").textContent = "Unknown"});
     </script>
   </body>
 </html>
