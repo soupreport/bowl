@@ -16,14 +16,24 @@
   <body>
     Today, &nbsp;<span id="date"></span>, &nbsp;the soup is <span id="soup">...drumroll...</span>
 
-    <script>
-      document.getElementById("date").textContent =
-        new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-    // Soup
+<script>
+  // Date
+  document.getElementById("date").textContent =
+    new Date().toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric"
+    });
+
+  // Soup
   fetch("./soup.json?v=" + Date.now())
     .then(res => res.json())
-    .then(data => {document.getElementById("soup").textContent = data.soup;})
-    .catch(() => {document.getElementById("soup").textContent = "Unknown"});
-    </script>
+    .then(data => {
+      document.getElementById("soup").textContent = data.soup;
+    })
+    .catch(() => {
+      document.getElementById("soup").textContent = "Unknown";
+    });
+</script>
   </body>
 </html>
