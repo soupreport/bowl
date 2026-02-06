@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
-<!-- force deploy -->
   <head>
     <style>
       body {
         margin: 0;
-        height: 200vh;
+        height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -15,10 +14,7 @@
     </style>
   </head>
   <body>
-<div class="content">
-  <p>Today’s soup is Tomato Bisque.</p>
-  <a href="tel:+13055551234">📞 Call the kitchen</a>
-</div>
+    Today, &nbsp;<span id="date"></span>, &nbsp;the soup is&nbsp;<span id="soup">...drumroll...</span>
 
 <script>
   // Date
@@ -39,6 +35,5 @@
       document.getElementById("soup").textContent = "Unknown";
     });
 </script>
-
   </body>
 </html>
