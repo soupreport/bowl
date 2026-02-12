@@ -12,15 +12,11 @@
       align-items: center;
       min-height: 100vh;
       margin: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: white;
     }
 
     .container {
       text-align: center;
-      background: white;
-      padding: 3rem;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       max-width: 600px;
     }
 
@@ -144,7 +140,7 @@
 <body>
   <div class="container">
     <div class="sentence">
-      The soup today is 
+      The soup today, <span id="currentDate" style="color: #667eea; font-weight: 600;"></span> , is
       <input type="text" id="userInput" placeholder="___________" maxlength="50">
     </div>
     <button onclick="submitAnswer()">Submit</button>
@@ -160,6 +156,17 @@
   </div>
 
   <script>
+    // Set today's date
+    function setDate() {
+      const dateElement = document.getElementById('currentDate');
+      const today = new Date();
+      const options = { month: 'long', day: 'numeric', year: 'numeric' };
+      dateElement.textContent = `(${today.toLocaleDateString('en-US', options)})`;
+    }
+
+    // Initialize date on load
+    setDate();
+
     function submitAnswer() {
       const input = document.getElementById('userInput');
       const value = input.value.trim();
