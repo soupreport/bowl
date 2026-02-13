@@ -87,7 +87,7 @@
     document.getElementById('maybeBtn').addEventListener('click', async function() {
       const newSoup = prompt("What soup?");
       if(newSoup) {
-        const newRestaurant = prompt("At which restaurant?");
+        const newRestaurant = prompt("Where?");
         const altText = newRestaurant ? newSoup + ' at ' + newRestaurant + '.' : newSoup + '.';
         await updateDoc(doc(db, 'soups', today), {
           alternatives: arrayUnion({soup: newSoup, restaurant: newRestaurant || ''})
