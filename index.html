@@ -3,7 +3,7 @@
 <body>
   The soup today<span id="date"></span> is <span id="soupDisplay"></span><span id="restaurantDisplay"></span>
   <div id="step1">
-    <input id="soupInput" placeholder="soup?"> <input id="restaurantInput" placeholder="where?">
+    <input id="soupInput" placeholder="soup?"> at <input id="restaurantInput" placeholder="where?">
   </div>
   <div id="afterSubmit" style="display:none">
     <button id="maybeBtn">or maybe it's</button>
@@ -43,7 +43,6 @@
         document.getElementById('restaurantDisplay').textContent = '.';
       }
       document.getElementById('step1').style.display = 'none';
-      document.getElementById('step2').style.display = 'none';
       document.getElementById('afterSubmit').style.display = 'inline';
       if (data.alternatives) {
         data.alternatives.forEach(alt => {
