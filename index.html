@@ -15,7 +15,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
+ 
     const firebaseConfig = {
       apiKey: "AIzaSyCnlKKjIWXE2gDCdEe8NN2uDPWd3RF-upU",
       authDomain: "soup-report-with-claude.firebaseapp.com",
@@ -24,8 +24,7 @@
       messagingSenderId: "798636211055",
       appId: "1:798636211055:web:f5cd6f84451a5efc98c69a",
       measurementId: "G-Q704Q3Z7HR"  
-    };
-
+    }; 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
@@ -74,7 +73,9 @@
     // Add another line
     document.getElementById('maybeBtn').addEventListener('click', function() {
       const newLine = document.createElement('div');
-      newLine.innerHTML = '<br>or maybe it\'s <input class="altSoup" placeholder="soup?"> at <input class="altRestaurant" placeholder="I'm not telling">';
+      newLine.innerHTML = '<br>or maybe it\'s <input class="altSoup" placeholder="soup?"> at <input class="altRestaurant" placeholder="where?">';
+      
+      // Insert before the button container
       document.getElementById('alternatives').appendChild(newLine);
       
       const altSoupInputs = newLine.querySelectorAll('.altSoup, .altRestaurant');
@@ -91,6 +92,14 @@
               });
               const altText = restaurant ? soup + ' at ' + restaurant + '.' : soup + '.';
               newLine.innerHTML = '<br>or maybe it\'s ' + altText + ' <a href="https://www.doordash.com" target="_blank"><button>Order</button></a>';
+              
+              // Show thank you message
+              document.getElementById('modal').style.display='block';
+              setTimeout(() => document.getElementById('modal').style.display='none', 2000);
+              
+              // Move the "or maybe it's" button to the bottom
+              const afterSubmitDiv = document.getElementById('afterSubmit');
+              document.body.appendChild(afterSubmitDiv);
             }
           }
         });
