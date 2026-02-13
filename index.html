@@ -1,12 +1,15 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html>
 <body>
   The soup today, <span id="date"></span>, is <span id="soupDisplay"></span><span id="restaurantDisplay"></span>
   <div id="mainInputs">
     <input id="soupInput" placeholder="soup?"> at <input id="restaurantInput" placeholder="where?">
   </div>
-  <div id="afterSubmit" style="display:none">
+  <span id="mainOrder" style="display:none">
     <a href="https://www.doordash.com" target="_blank"><button>Order</button></a>
+  </span>
+  <div id="maybeContainer" style="display:none">
     <button id="maybeBtn">or maybe it's</button>
   </div>
   <div id="modal" style="display:none">Thank you</div>
@@ -25,6 +28,7 @@
       appId: "1:798636211055:web:f5cd6f84451a5efc98c69a",
       measurementId: "G-Q704Q3Z7HR"  
     }; 
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
@@ -39,7 +43,8 @@
       document.getElementById('soupDisplay').textContent = data.soup;
       document.getElementById('restaurantDisplay').textContent = data.restaurant ? ' at ' + data.restaurant + '.' : '.';
       document.getElementById('mainInputs').style.display = 'none';
-      document.getElementById('afterSubmit').style.display = 'inline';
+      document.getElementById('mainOrder').style.display = 'inline';
+      document.getElementById('maybeContainer').style.display = 'inline';
       if (data.alternatives) {
         data.alternatives.forEach(alt => {
           const altText = alt.restaurant ? alt.soup + ' at ' + alt.restaurant + '.' : alt.soup + '.';
@@ -64,7 +69,8 @@
         document.getElementById('soupDisplay').textContent = soup;
         document.getElementById('restaurantDisplay').textContent = restaurant ? ' at ' + restaurant + '.' : '.';
         document.getElementById('mainInputs').style.display = 'none';
-        document.getElementById('afterSubmit').style.display = 'inline';
+        document.getElementById('mainOrder').style.display = 'inline';
+        document.getElementById('maybeContainer').style.display = 'inline';
         document.getElementById('modal').style.display='block';
         setTimeout(() => document.getElementById('modal').style.display='none', 2000);
       }
@@ -73,7 +79,7 @@
     // Add another line
     document.getElementById('maybeBtn').addEventListener('click', function() {
       const newLine = document.createElement('div');
-      newLine.innerHTML = '<br>or maybe it\'s <input class="altSoup" placeholder="soup?"> at <input class="altRestaurant" placeholder="where?">';
+      newLine.innerHTML = '<br>or maybe it\'s <input class="altSoup" placeholder="soup?"> at <input class="altRestaurant" placeholder="I'm not telling">';
       
       // Insert before the button container
       document.getElementById('alternatives').appendChild(newLine);
@@ -97,9 +103,9 @@
               document.getElementById('modal').style.display='block';
               setTimeout(() => document.getElementById('modal').style.display='none', 2000);
               
-              // Move the "or maybe it's" button to the bottom
-              const afterSubmitDiv = document.getElementById('afterSubmit');
-              document.body.appendChild(afterSubmitDiv);
+              // Move only the "or maybe it's" button to the bottom
+              const maybeContainer = document.getElementById('maybeContainer');
+              document.body.appendChild(maybeContainer);
             }
           }
         });
