@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
 <body>
-  The soup today <span id="date"></span> is <input id="input"> 
-  <button id="submitBtn">Submit</button>
+  The soup today <span id="date"></span> is <span id="soupDisplay"></span><span id="restaurantDisplay"></span>
+  <div id="step1">
+    <input id="soupInput"> 
+    <button id="soupBtn">Submit</button>
+  </div>
+  <div id="step2" style="display:none">
+    at <input id="restaurantInput">
+    <button id="restaurantBtn">Submit</button>
+  </div>
   <div id="afterSubmit" style="display:none">
     <button id="maybeBtn">or maybe it's</button>
     <a href="https://www.doordash.com" target="_blank"><button>Order</button></a>
@@ -14,7 +21,6 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
     import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-    // REPLACE THIS with your Firebase config from Firebase Console
     const firebaseConfig = {
       apiKey: "AIzaSyCnlKKjIWXE2gDCdEe8NN2uDPWd3RF-upU",
       authDomain: "soup-report-with-claude.firebaseapp.com",
@@ -36,22 +42,36 @@
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data();
-      document.getElementById('input').value = data.soup;
-      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('soupDisplay').textContent = data.soup;
+      document.getElementById('restaurantDisplay').textContent = ' at ' + data.restaurant + '.';
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'none';
       document.getElementById('afterSubmit').style.display = 'inline';
       if (data.alternatives) {
         data.alternatives.forEach(alt => {
-          document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + alt;
+          document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + alt.soup + ' at ' + alt.restaurant + '.';
         });
       }
     }
     
-    // Submit button click handler
-    document.getElementById('submitBtn').addEventListener('click', async function() {
-      const soup = document.getElementById('input').value;
+    // Step 1: Submit soup
+    document.getElementById('soupBtn').addEventListener('click', function() {
+      const soup = document.getElementById('soupInput').value;
       if(soup) {
-        await setDoc(doc(db, 'soups', today), { soup: soup, alternatives: [] });
-        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('soupDisplay').textContent = soup;
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'inline';
+      }
+    });
+    
+    // Step 2: Submit restaurant
+    document.getElementById('restaurantBtn').addEventListener('click', async function() {
+      const soup = document.getElementById('soupInput').value;
+      const restaurant = document.getElementById('restaurantInput').value;
+      if(restaurant) {
+        await setDoc(doc(db, 'soups', today), { soup: soup, restaurant: restaurant, alternatives: [] });
+        document.getElementById('restaurantDisplay').textContent = ' at ' + restaurant + '.';
+        document.getElementById('step2').style.display = 'none';
         document.getElementById('afterSubmit').style.display = 'inline';
         document.getElementById('modal').style.display='block';
         setTimeout(() => document.getElementById('modal').style.display='none', 2000);
@@ -60,12 +80,13 @@
     
     // Add another soup option
     document.getElementById('maybeBtn').addEventListener('click', async function() {
-      const newSoup = prompt("What else might it be?");
-      if(newSoup) {
+      const newSoup = prompt("What soup?");
+      const newRestaurant = prompt("At which restaurant?");
+      if(newSoup && newRestaurant) {
         await updateDoc(doc(db, 'soups', today), {
-          alternatives: arrayUnion(newSoup)
+          alternatives: arrayUnion({soup: newSoup, restaurant: newRestaurant})
         });
-        document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + newSoup;
+        document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + newSoup + ' at ' + newRestaurant + '.';
       }
     });
   </script>
