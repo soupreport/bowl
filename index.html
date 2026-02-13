@@ -29,7 +29,8 @@
     const db = getFirestore(app);
     
     const today = new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
-    document.getElementById('date').;
+    document.getElementById('date').textContent = ', ' + today + ',';
+    
     
     // Load existing soup for today
     const docRef = doc(db, 'soups', today);
