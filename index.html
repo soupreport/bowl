@@ -43,7 +43,11 @@
     if (docSnap.exists()) {
       const data = docSnap.data();
       document.getElementById('soupDisplay').textContent = data.soup;
-      document.getElementById('restaurantDisplay').textContent = ' at ' + data.restaurant + '.';
+      if(data.restaurant) {
+        document.getElementById('restaurantDisplay').textContent = ' at ' + data.restaurant + '.';
+      } else {
+        document.getElementById('restaurantDisplay').textContent = '.';
+      }
       document.getElementById('step1').style.display = 'none';
       document.getElementById('step2').style.display = 'none';
       document.getElementById('afterSubmit').style.display = 'inline';
