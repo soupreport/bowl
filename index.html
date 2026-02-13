@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-  The soup today <span id="date"></span> is <span id="soupDisplay"></span><span id="restaurantDisplay"></span>
+  The soup today, <span id="date"></span>, is <span id="soupDisplay"></span><span id="restaurantDisplay"></span>
   <div id="step1">
     <input id="soupInput"> 
     <button id="soupBtn">Submit</button>
@@ -49,7 +49,8 @@
       document.getElementById('afterSubmit').style.display = 'inline';
       if (data.alternatives) {
         data.alternatives.forEach(alt => {
-          document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + alt.soup + ' at ' + alt.restaurant + '.';
+          const altText = alt.restaurant ? alt.soup + ' at ' + alt.restaurant + '.' : alt.soup + '.';
+          document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + altText;
         });
       }
     }
@@ -81,12 +82,13 @@
     // Add another soup option
     document.getElementById('maybeBtn').addEventListener('click', async function() {
       const newSoup = prompt("What soup?");
-      const newRestaurant = prompt("At which restaurant?");
-      if(newSoup && newRestaurant) {
+      if(newSoup) {
+        const newRestaurant = prompt("At which restaurant?");
+        const altText = newRestaurant ? newSoup + ' at ' + newRestaurant + '.' : newSoup + '.';
         await updateDoc(doc(db, 'soups', today), {
-          alternatives: arrayUnion({soup: newSoup, restaurant: newRestaurant})
+          alternatives: arrayUnion({soup: newSoup, restaurant: newRestaurant || ''})
         });
-        document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + newSoup + ' at ' + newRestaurant + '.';
+        document.getElementById('alternatives').innerHTML += '<br>or maybe it\'s ' + altText;
       }
     });
   </script>
